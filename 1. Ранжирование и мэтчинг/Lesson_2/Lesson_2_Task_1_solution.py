@@ -89,6 +89,8 @@ def precission_at_k(ys_true: Tensor, ys_pred: Tensor, k: int) -> float:
     k_subset = ys_true_sorted[:k]
     k = min(int(ys_true_sorted.sum()), k)
     return float(k_subset.sum()) / k
+
+
 def reciprocal_rank(ys_true: Tensor, ys_pred: Tensor) -> float:
     _, indices = sort(ys_pred, descending=True)
     sorted_true = ys_true[indices]
