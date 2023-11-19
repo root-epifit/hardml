@@ -63,6 +63,8 @@ class Solution:
 
     def _scale_features_in_query_groups(self, inp_feat_array: np.ndarray,
                                         inp_query_ids: np.ndarray) -> np.ndarray:
+        # нормируем значения отдельгл в каждой группе
+        # кол-во групп = кол-ву уникальных inp_query_ids
         for index in np.unique(inp_query_ids):
             current_indexes = inp_query_ids == index # маска для отбора значений из входного массива
             inp_feat_array[current_indexes] = StandardScaler().fit_transform(inp_feat_array[current_indexes])
@@ -122,10 +124,15 @@ class Solution:
             current_indexes = self.query_ids_train == index
             current_X = self.X_train[current_indexes]
             current_y = self.ys_train[current_indexes]
+            
+            # разворачиваем y вертикально, чтобы его размерность = размерности вектора предсказаний
+            #solution.model(solution.X_train).shape, solution.ys_train.shape, torch.unsqueeze(solution.ys_train,1).shape
+            #(torch.Size([10000, 1]), torch.Size([10000]), torch.Size([10000, 1]))
             current_y = torch.unsqueeze(current_y, 1)
             
             self.optimizer.zero_grad()
             y_pred = self.model(current_X)
+ 
             batch_loss = self._calc_loss(current_y, y_pred)
             batch_loss.backward(retain_graph=True)
             self.optimizer.step()
