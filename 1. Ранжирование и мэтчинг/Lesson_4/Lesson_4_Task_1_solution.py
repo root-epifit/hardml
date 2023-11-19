@@ -268,7 +268,13 @@ class Solution:
         self.best_ndcg = model_info["best_ndcg"]
         self.best_idx = model_info["best_idx"]
         self.lr = model_info["lr"]
-        
+
+
+# Параметры для прохождения грейдера
+#solution=Solution(max_depth=15, lr=0.3620048143631117, min_samples_leaf=13)
+#solution.save('Task_4.pkl)
+
+
 if '__name__' == 'main':
      # Обучение. Надо лучще 0.43
         
